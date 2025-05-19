@@ -1,0 +1,53 @@
+import { Request } from 'express';
+import sharp from 'sharp';
+import { v4 as uuid } from 'uuid';
+import { IImageTaskRepository } from '@/api/domain/repositories/IImageTaskRepository';
+import { IMessagingService } from '@/api/domain/services/IMessagingService';
+import { ImageTask, TaskStatus } from '@/api/domain/entities/ImageTask';
+
+export class UploadImage {
+  constructor(
+    private readonly repo: IImageTaskRepository,
+    private readonly queue: IMessagingService
+  ) {}
+
+  async execute(req: Request): Promise<{task_id: string, status: string}> {
+    if (!req.file) {
+      throw new Error('No file uploaded');
+    }
+
+    const { filename, path: tempPath, mimetype } = req.file;
+    const taskId = uuid();
+
+    const metadata = await sharp(tempPath).metadata();
+    if (!metadata.width || !metadata.height) {
+      throw new Error('Invalid image file');
+    }
+
+    const task: Omit<ImageTask, 'versions'> = {
+      taskId,
+      originalFilename: filename,
+      status: TaskStatus.PENDING,
+      originalMetadata: {
+        width: metadata.width,
+        height: metadata.height,
+        mimetype,
+        exif: metadata.exif,
+      },
+    };
+
+    await this.repo.create(task);
+
+    await this.queue.publishMessage(
+      'image-processing',
+      {
+        taskId,
+        originalFilename: filename,
+        originalPath: tempPath,
+        metadata: task.originalMetadata,
+      }
+    );
+
+    return { task_id: taskId, status: TaskStatus.PENDING };
+  }
+}
