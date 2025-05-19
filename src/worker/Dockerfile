@@ -9,5 +9,4 @@ COPY ../../tsconfig.json ./
 COPY . ./
 
 ENV NODE_ENV=development
-EXPOSE 3000
-CMD ["npm", "run", "start:api"]
+CMD ["npm", "run", "start:worker"]
