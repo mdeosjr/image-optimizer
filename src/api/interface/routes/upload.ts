@@ -2,9 +2,9 @@ import { Router } from 'express';
 import multer from 'multer';
 import { UploadController } from '@/api/interface/controllers/uploadController';
 import { UploadImage } from '@/api/useCases/uploadImage';
-import { ImageTaskRepository } from '@/api/infrastructure/db/ImageTaskRepository';
-import { DatabaseConnection } from '@/api/infrastructure/db/connection';
-import { MessagingService } from '@/api/infrastructure/messaging/connection';
+import { ImageTaskRepository } from '@/shared/infrastructure/db/ImageTaskRepository';
+import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
+import { MessagingService } from '@/shared/infrastructure/messaging/connection';
 
 const router = Router();
 const upload = multer({ dest: process.env.UPLOAD_DIR });

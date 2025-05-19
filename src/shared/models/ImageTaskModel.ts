@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import type { ImageTask } from '@/api/domain/entities/ImageTask';
-import { TaskStatus } from '@/api/domain/entities/ImageTask';
+import type { ImageTask } from '@/shared/domain/entities/ImageTask';
+import { TaskStatus } from '@/shared/domain/entities/ImageTask';
 
 const ImageVersionSchema = new Schema({
   path: { type: String, required: true },

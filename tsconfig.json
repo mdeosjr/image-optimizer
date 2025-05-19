@@ -2,6 +2,10 @@
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
     "lib": ["es2020", "dom"],
     "outDir": "./dist",
     "rootDir": "./src",

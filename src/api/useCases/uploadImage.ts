@@ -1,10 +1,10 @@
 import type { Request } from 'express';
 import sharp from 'sharp';
 import { v4 as uuid } from 'uuid';
-import type { IImageTaskRepository } from '@/api/domain/repositories/IImageTaskRepository';
-import type { IMessagingService } from '@/api/domain/services/IMessagingService';
-import type { ImageTask } from '@/api/domain/entities/ImageTask';
-import { TaskStatus } from '@/api/domain/entities/ImageTask';
+import type { IImageTaskRepository } from '@/shared/domain/repositories/IImageTaskRepository';
+import type { IMessagingService } from '@/shared/domain/services/IMessagingService';
+import type { ImageTask } from '@/shared/domain/entities/ImageTask';
+import { TaskStatus } from '@/shared/domain/entities/ImageTask';
 
 export class UploadImage {
   constructor(
@@ -12,7 +12,7 @@ export class UploadImage {
     private readonly queue: IMessagingService
   ) {}
 
-  async execute(req: Request): Promise<{task_id: string, status: string}> {
+  async execute(req: Request): Promise<{ task_id: string; status: string }> {
     if (!req.file) {
       throw new Error('No file uploaded');
     }
@@ -39,15 +39,12 @@ export class UploadImage {
 
     await this.repo.create(task);
 
-    await this.queue.publishMessage(
-      'image-processing',
-      {
-        taskId,
-        originalFilename: filename,
-        originalPath: tempPath,
-        metadata: task.originalMetadata,
-      }
-    );
+    await this.queue.publishMessage('image-processing', {
+      taskId,
+      originalFilename: filename,
+      originalPath: tempPath,
+      metadata: task.originalMetadata,
+    });
 
     return { task_id: taskId, status: TaskStatus.PENDING };
   }

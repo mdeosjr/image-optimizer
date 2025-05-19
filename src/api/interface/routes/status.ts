@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { StatusController } from '@/api/interface/controllers/statusController';
 import { GetTaskStatus } from '@/api/useCases/getTaskStatus';
-import { ImageTaskRepository } from '@/api/infrastructure/db/ImageTaskRepository';
-import { DatabaseConnection } from '@/api/infrastructure/db/connection';
+import { ImageTaskRepository } from '@/shared/infrastructure/db/ImageTaskRepository';
+import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
 
 const router = Router();
 

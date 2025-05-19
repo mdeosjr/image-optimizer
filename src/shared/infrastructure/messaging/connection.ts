@@ -1,5 +1,5 @@
 import { RabbitMQService } from './RabbitMQMessaging';
-import { IMessagingService } from '@/api/domain/services/IMessagingService';
+import type { IMessagingService } from '@/shared/domain/services/IMessagingService';
 
 export class MessagingService {
   private static instance: MessagingService;

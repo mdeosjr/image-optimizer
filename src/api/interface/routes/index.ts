@@ -7,7 +7,7 @@ const router = Router();
 router.use("/api", statusRouter);
 router.use("/api", uploadRouter);
 
-router.get("/health", (req, res) => {
+router.get("/health", (_, res) => {
   res.status(200).send("OK");
 });
 
