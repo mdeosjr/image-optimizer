@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import routes from './interface/routes';
-import { DatabaseConnection } from './infrastructure/db/connection';
-import { MessagingService } from './infrastructure/messaging/connection';
+import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
+import { MessagingService } from '@/shared/infrastructure/messaging/connection';
 import logger from '../shared/logger';
 
 dotenv.config();

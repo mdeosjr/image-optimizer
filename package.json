@@ -23,6 +23,8 @@
     "mongoose": "^7.5.0",
     "multer": "^1.4.5-lts.2",
     "pino": "^9.7.0",
+    "pino-http": "^10.4.0",
+    "pino-pretty": "^13.0.0",
     "sharp": "^0.32.5",
     "uuid": "^11.1.0",
     "winston": "^3.10.0",

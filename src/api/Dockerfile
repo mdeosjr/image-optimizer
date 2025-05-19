@@ -2,11 +2,11 @@ FROM node:23-alpine
 
 WORKDIR /app
 
-COPY ../../package.json ../../package-lock.json ./
+COPY package.json package-lock.json tsconfig.json ./
 RUN npm install
 
-COPY ../../tsconfig.json ./
-COPY . ./
+COPY src/shared ./src/shared
+COPY src/api ./src/api
 
 ENV NODE_ENV=development
 EXPOSE 3000

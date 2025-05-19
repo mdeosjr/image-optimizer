@@ -7,6 +7,8 @@ services:
       - '27017:27017'
     volumes:
       - mongo_data:/data/db
+    networks:
+      - app-network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -18,11 +20,13 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
 
   api:
     build:
-      context: ./src/api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/api/Dockerfile
     container_name: image-optimizer-api
     restart: always
     env_file:
@@ -32,22 +36,26 @@ services:
     depends_on:
       - mongo
       - rabbitmq
-    volumes:
-      - ./src/api:/app
+    networks:
+      - app-network
 
   worker:
     build:
-      context: ./src/worker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/worker/Dockerfile
     container_name: image-optimizer-worker
     restart: always
     env_file:
-      - ./src/api/.env
+      - ./src/worker/.env
     depends_on:
       - mongo
       - rabbitmq
-    volumes:
-      - ./src/worker:/app
+    networks:
+      - app-network
 
 volumes:
   mongo_data:
+
+networks:
+  app-network:
+    driver: bridge
