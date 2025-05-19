@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import type { GetTaskStatus } from '@/api/useCases/getTaskStatus';
+import logger from '@/shared/logger';
 
 export class StatusController {
   constructor(private readonly getStatus: GetTaskStatus) {}
@@ -15,7 +16,7 @@ export class StatusController {
 
       return res.json(task);
     } catch (error) {
-      console.log(error)
+      logger.error({ err: error }, 'Erro ao buscar status da task');
       return res.status(500).json({ error: 'Internal server error' });
     }
   }

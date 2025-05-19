@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import routes from './interface/routes';
 import { DatabaseConnection } from './infrastructure/db/connection';
 import { MessagingService } from './infrastructure/messaging/connection';
+import logger from '../shared/logger';
 
 dotenv.config();
 
@@ -29,10 +30,10 @@ async function startServer() {
     await messaging.initialize(process.env.RABBITMQ_URI);
 
     app.listen(PORT, () => {
-      console.log(`API rodando em http://localhost:${PORT}`);
+      logger.info(`API rodando em http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error('Erro ao iniciar o servidor:', error);
+    logger.error({ err: error }, 'Erro ao iniciar o servidor');
     process.exit(1);
   }
 }

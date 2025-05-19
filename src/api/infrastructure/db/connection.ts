@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { MongoDBConnection } from './MongoDBConnection';
 import type { IDatabaseConnection } from '@/api/domain/services/IDatabaseConnection';
+import logger from '@/shared/logger';
 
 export class DatabaseConnection {
   private static instance: DatabaseConnection;
@@ -33,9 +34,9 @@ export class DatabaseConnection {
     try {
       await mongoose.disconnect();
       this.isConnected = false;
-      console.log('Disconnected from MongoDB');
+      logger.info('Disconnected from MongoDB');
     } catch (error) {
-      console.error('MongoDB disconnection error:', error);
+      logger.error({ err: error }, 'MongoDB disconnection error');
       throw error;
     }
   }

@@ -1,5 +1,6 @@
-import amqp, { Channel, ChannelModel } from 'amqplib';
-import { IMessagingService, IMessage } from '@/api/domain/services/IMessagingService';
+import amqp from 'amqplib';
+import type { Channel, ChannelModel } from 'amqplib';
+import type { IMessagingService, IMessage } from '@/api/domain/services/IMessagingService';
 
 export class RabbitMQService implements IMessagingService {
   private connection!: ChannelModel;
