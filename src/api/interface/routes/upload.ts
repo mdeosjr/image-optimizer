@@ -3,18 +3,17 @@ import multer from 'multer';
 import { UploadController } from '@/api/interface/controllers/uploadController';
 import { UploadImage } from '@/api/useCases/uploadImage';
 import { ImageTaskRepository } from '@/shared/infrastructure/db/ImageTaskRepository';
-import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
-import { MessagingService } from '@/shared/infrastructure/messaging/connection';
+import type { Connection } from 'mongoose';
+import type { IMessagingService } from '@/shared/domain/services/IMessagingService';
 
-const router = Router();
-const upload = multer({ dest: process.env.UPLOAD_DIR });
+export function createUploadRouter(db: Connection, messaging: IMessagingService) {
+  const router = Router();
+  const upload = multer({ dest: process.env.UPLOAD_DIR });
+  const repo = new ImageTaskRepository(db);
+  const uploadImage = new UploadImage(repo, messaging);
+  const uploadController = new UploadController(uploadImage);
 
-const db = DatabaseConnection.getInstance().getConnection();
-const repo = new ImageTaskRepository(db);
-const messaging = MessagingService.getInstance().getService();
-const uploadImage = new UploadImage(repo, messaging);
-const uploadController = new UploadController(uploadImage);
+  router.post('/upload', upload.single('image'), (req, res) => uploadController.handle(req, res));
 
-router.post('/upload', upload.single('image'), (req, res) => uploadController.handle(req, res));
-
-export default router;
+  return router;
+}

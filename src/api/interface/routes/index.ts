@@ -1,14 +1,16 @@
-import { Router } from "express";
-import statusRouter from "./status";
-import uploadRouter from "./upload";
+import { Router } from 'express';
+import type { Router as ExpressRouter } from 'express';
+import type { IMessagingService } from '@/shared/domain/services/IMessagingService';
+import type { Connection } from 'mongoose';
+import { createStatusRouter } from './status';
+import { createUploadRouter } from './upload';
 
-const router = Router();
-
-router.use("/api", statusRouter);
-router.use("/api", uploadRouter);
-
-router.get("/health", (_, res) => {
-  res.status(200).send("OK");
-});
-
-export default router;
+export function createApiRouter(db: Connection, messaging: IMessagingService): ExpressRouter {
+  const router = Router();
+  router.use('/api', createStatusRouter(db));
+  router.use('/api', createUploadRouter(db, messaging));
+  router.get('/health', (_, res) => {
+    res.status(200).send('OK');
+  });
+  return router;
+}

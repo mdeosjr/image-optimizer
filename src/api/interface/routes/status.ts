@@ -2,15 +2,15 @@ import { Router } from 'express';
 import { StatusController } from '@/api/interface/controllers/statusController';
 import { GetTaskStatus } from '@/api/useCases/getTaskStatus';
 import { ImageTaskRepository } from '@/shared/infrastructure/db/ImageTaskRepository';
-import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
+import type { Connection } from 'mongoose';
 
-const router = Router();
+export function createStatusRouter(db: Connection) {
+  const router = Router();
+  const repo = new ImageTaskRepository(db);
+  const getTaskStatus = new GetTaskStatus(repo);
+  const statusController = new StatusController(getTaskStatus);
 
-const db = DatabaseConnection.getInstance().getConnection();
-const repo = new ImageTaskRepository(db);
-const getTaskStatus = new GetTaskStatus(repo);
-const statusController = new StatusController(getTaskStatus);
+  router.get('/status/:taskId', (req, res) => statusController.handle(req, res));
 
-router.get('/status/:taskId', (req, res) => statusController.handle(req, res));
-
-export default router;
+  return router;
+}
