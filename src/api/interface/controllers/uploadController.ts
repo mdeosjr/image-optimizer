@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { UploadImage } from '@/api/useCases/uploadImage';
+import type { Request, Response } from 'express';
+import type { UploadImage } from '@/api/useCases/uploadImage';
 
 export class UploadController {
   constructor(private readonly uploadImage: UploadImage) {}

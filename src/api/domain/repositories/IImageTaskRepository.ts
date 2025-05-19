@@ -1,4 +1,4 @@
-import { ImageTask } from '../entities/ImageTask';
+import type { ImageTask } from '../entities/ImageTask';
 
 export interface IImageTaskRepository {
   create(task: Omit<ImageTask, 'versions'>): Promise<ImageTask>;

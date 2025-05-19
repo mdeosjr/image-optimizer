@@ -1,5 +1,6 @@
-import mongoose, { Model, Connection } from 'mongoose';
-import { IDatabaseConnection } from '@/api/domain/services/IDatabaseConnection';
+import mongoose from 'mongoose';
+import type { Connection } from 'mongoose';
+import type { IDatabaseConnection } from '@/api/domain/services/IDatabaseConnection';
 
 export class MongoDBConnection implements IDatabaseConnection {
   private connection!: Connection;

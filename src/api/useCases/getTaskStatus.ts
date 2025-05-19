@@ -1,5 +1,5 @@
-import { IImageTaskRepository } from '@/api/domain/repositories/IImageTaskRepository';
-import { ImageTask } from '@/api/domain/entities/ImageTask';
+import type { IImageTaskRepository } from '@/api/domain/repositories/IImageTaskRepository';
+import type { ImageTask } from '@/api/domain/entities/ImageTask';
 
 export class GetTaskStatus {
   constructor(private readonly repo: IImageTaskRepository) {}

@@ -17,12 +17,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
 async function startServer() {
+  if (!process.env.MONGODB_URI || !process.env.RABBITMQ_URI) {
+    throw new Error('Connection environment variables are not defined');
+  }
+
   try {
     const db = DatabaseConnection.getInstance();
-    await db.connect(process.env.MONGODB_URI!);
+    await db.connect(process.env.MONGODB_URI);
 
     const messaging = MessagingService.getInstance();
-    await messaging.initialize(process.env.RABBITMQ_URI!);
+    await messaging.initialize(process.env.RABBITMQ_URI);
 
     app.listen(PORT, () => {
       console.log(`API rodando em http://localhost:${PORT}`);

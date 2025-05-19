@@ -1,9 +1,10 @@
-import { Request } from 'express';
+import type { Request } from 'express';
 import sharp from 'sharp';
 import { v4 as uuid } from 'uuid';
-import { IImageTaskRepository } from '@/api/domain/repositories/IImageTaskRepository';
-import { IMessagingService } from '@/api/domain/services/IMessagingService';
-import { ImageTask, TaskStatus } from '@/api/domain/entities/ImageTask';
+import type { IImageTaskRepository } from '@/api/domain/repositories/IImageTaskRepository';
+import type { IMessagingService } from '@/api/domain/services/IMessagingService';
+import type { ImageTask } from '@/api/domain/entities/ImageTask';
+import { TaskStatus } from '@/api/domain/entities/ImageTask';
 
 export class UploadImage {
   constructor(

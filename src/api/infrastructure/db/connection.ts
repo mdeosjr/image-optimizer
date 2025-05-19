@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { MongoDBConnection } from './MongoDBConnection';
-import { IDatabaseConnection } from '@/api/domain/services/IDatabaseConnection';
+import type { IDatabaseConnection } from '@/api/domain/services/IDatabaseConnection';
 
 export class DatabaseConnection {
   private static instance: DatabaseConnection;
