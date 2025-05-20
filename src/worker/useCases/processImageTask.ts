@@ -12,7 +12,7 @@ export class ProcessImageTask {
 
   async execute(message: IMessage): Promise<void> {
     const originalName = path.parse(message.originalFilename).name;
-    const optimizedDir = path.join(process.env.UPLOAD_DIR || '/tmp/uploads', `${originalName}_optimized`);
+    const optimizedDir = path.join('/optimized', `${originalName}_optimized`);
     try {
       logger.info({ message }, 'Starting image processing');
       await this.repo.update(message.taskId, { status: TaskStatus.PROCESSING });
@@ -67,11 +67,10 @@ export class ProcessImageTask {
       });
     } finally {
       try {
-        const tmpDir = path.dirname(message.originalPath);
-        await fs.rm(tmpDir, { recursive: true, force: true });
-        logger.info({ tmpDir }, 'Temporary folder cleaned');
+        await fs.rm(message.originalPath, { force: true });
+        logger.info({ file: message.originalPath }, 'Temporary file cleaned');
       } catch (err) {
-        logger.warn({ err }, 'Failed to clean temporary folder');
+        logger.warn({ err }, 'Failed to clean temporary file');
       }
     }
   }

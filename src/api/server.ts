@@ -16,9 +16,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
-app.use(logMiddleware);
-app.use(errorMiddleware);
-
 
 async function startServer(): Promise<void> {
   if (!process.env.MONGODB_URI || !process.env.RABBITMQ_URI) {
@@ -34,7 +31,9 @@ async function startServer(): Promise<void> {
     await messaging.initialize(process.env.RABBITMQ_URI);
     const messagingService = messaging.getService();
 
+    app.use(logMiddleware);
     app.use(createApiRouter(db, messagingService));
+    app.use(errorMiddleware);
 
     app.listen(PORT, () => {
       logger.info(`API running on http://localhost:${PORT}`);

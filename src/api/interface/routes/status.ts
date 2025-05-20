@@ -10,7 +10,7 @@ export function createStatusRouter(db: Connection) {
   const getTaskStatus = new GetTaskStatus(repo);
   const statusController = new StatusController(getTaskStatus);
 
-  router.get('/status/:taskId', (req, res) => statusController.handle(req, res));
+  router.get('/status/:taskId', (req, res, next) => statusController.handle(req, res, next));
 
   return router;
 }

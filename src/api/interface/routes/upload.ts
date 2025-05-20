@@ -13,7 +13,7 @@ export function createUploadRouter(db: Connection, messaging: IMessagingService)
   const uploadImage = new UploadImage(repo, messaging);
   const uploadController = new UploadController(uploadImage);
 
-  router.post('/upload', upload.single('image'), (req, res) => uploadController.handle(req, res));
+  router.post('/upload', upload.single('image'), (req, res, next) => uploadController.handle(req, res, next));
 
   return router;
 }

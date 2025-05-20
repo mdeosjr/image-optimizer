@@ -9,8 +9,12 @@ export function createApiRouter(db: Connection, messaging: IMessagingService): E
   const router = Router();
   router.use('/api', createStatusRouter(db));
   router.use('/api', createUploadRouter(db, messaging));
-  router.get('/health', (_, res) => {
-    res.status(200).send('OK');
+  router.get('/health', (_, res, next) => {
+    try {
+      res.status(200).send('OK');
+    } catch (err) {
+      next(err);
+    }
   });
   return router;
 }

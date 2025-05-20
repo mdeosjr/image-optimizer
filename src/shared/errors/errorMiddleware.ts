@@ -1,8 +1,8 @@
-import type { Request, Response } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { AppError, STATUS_CODE } from '../errors/AppError';
 import logger from '../logger/logger';
 
-export function errorMiddleware(err: Error, req: Request, res: Response): void {
+export function errorMiddleware(err: Error, req: Request, res: Response, next: NextFunction): void {
   if (err instanceof AppError) {
     logger.warn(
       {
@@ -10,7 +10,6 @@ export function errorMiddleware(err: Error, req: Request, res: Response): void {
         statusCode: err.statusCode,
         path: req.originalUrl,
         method: req.method,
-        requestId: req.headers['x-request-id'] || 'unknown',
       },
       `AppError: ${err.message}`
     );
@@ -27,7 +26,6 @@ export function errorMiddleware(err: Error, req: Request, res: Response): void {
       stack: err.stack,
       path: req.originalUrl,
       method: req.method,
-      requestId: req.headers['x-request-id'] || 'unknown',
     },
     `Unexpected error: ${err.message}`
   );
