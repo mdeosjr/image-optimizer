@@ -7,6 +7,8 @@ RUN npm install
 
 COPY src/shared ./src/shared
 COPY src/api ./src/api
+COPY tmp /tmp
+COPY optimized /optimized
 
 ENV NODE_ENV=development
 EXPOSE 3000
