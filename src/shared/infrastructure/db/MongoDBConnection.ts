@@ -16,7 +16,7 @@ export class MongoDBConnection implements IDatabaseConnection {
     await this.connection.close();
   }
 
-  getConnection(): typeof mongoose {
-    return mongoose;
+  getConnection(): Connection {
+    return this.connection;
   }
 }

@@ -16,7 +16,7 @@ export class StatusController {
 
       return res.json(task);
     } catch (error) {
-      logger.error({ err: error }, 'Erro ao buscar status da task');
+      logger.error({ err: error }, 'Error searching task status');
       return res.status(500).json({ error: 'Internal server error' });
     }
   }

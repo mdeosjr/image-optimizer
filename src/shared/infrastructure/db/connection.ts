@@ -21,18 +21,18 @@ export class DatabaseConnection {
     if (this.isConnected) {
       return;
     }
-
     this.database = new MongoDBConnection(uri);
-    await this.database.getConnection();
+    await this.database.connect(uri);
+    this.isConnected = true;
+    logger.info('Connected to MongoDB');
   }
 
   async disconnect(): Promise<void> {
     if (!this.isConnected) {
       return;
     }
-
     try {
-      await mongoose.disconnect();
+      await this.database.disconnect();
       this.isConnected = false;
       logger.info('Disconnected from MongoDB');
     } catch (error) {
