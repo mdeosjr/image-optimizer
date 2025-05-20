@@ -1,10 +1,12 @@
-import express from 'express';
+import express, { json, urlencoded } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { createApiRouter } from './interface/routes';
 import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
 import { MessagingService } from '@/shared/infrastructure/messaging/connection';
-import logger from '../shared/logger';
+import logger from '../shared/logger/logger';
+import { logMiddleware } from '@/shared/logger/loggerMiddleware';
+import { errorMiddleware } from '@/shared/errors/errorMiddleware';
 
 dotenv.config();
 
@@ -12,10 +14,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
+app.use(logMiddleware);
+app.use(errorMiddleware);
 
-async function startServer() {
+
+async function startServer(): Promise<void> {
   if (!process.env.MONGODB_URI || !process.env.RABBITMQ_URI) {
     throw new Error('Connection environment variables are not defined');
   }
@@ -32,7 +37,7 @@ async function startServer() {
     app.use(createApiRouter(db, messagingService));
 
     app.listen(PORT, () => {
-      logger.info(`API rodando em http://localhost:${PORT}`);
+      logger.info(`API running on http://localhost:${PORT}`);
     });
   } catch (error) {
     logger.error({ err: error }, 'Error starting API');

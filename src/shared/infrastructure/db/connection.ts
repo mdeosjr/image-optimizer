@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { MongoDBConnection } from './MongoDBConnection';
 import type { IDatabaseConnection } from '@/shared/domain/services/IDatabaseConnection';
-import logger from '@/shared/logger';
+import logger from '@/shared/logger/logger';
 
 export class DatabaseConnection {
   private static instance: DatabaseConnection;

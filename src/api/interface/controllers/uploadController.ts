@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import type { UploadImage } from '@/api/useCases/uploadImage';
+import { AppError, STATUS_CODE } from '@/shared/errors/AppError';
 
 export class UploadController {
   constructor(private readonly uploadImage: UploadImage) {}
@@ -10,11 +11,11 @@ export class UploadController {
       
       return res.status(202).json({ taskId });
     } catch (error) {
-      if (error instanceof Error) {
-        return res.status(400).json({ error: error.message });
+      if (error instanceof AppError) {
+        return res.status(error.statusCode).json({ error: error.message });
       }
 
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
     }
   }
 }

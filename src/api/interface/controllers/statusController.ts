@@ -1,23 +1,18 @@
 import type { Request, Response } from 'express';
 import type { GetTaskStatus } from '@/api/useCases/getTaskStatus';
-import logger from '@/shared/logger';
+import { AppError, STATUS_CODE } from '@/shared/errors/AppError';
 
 export class StatusController {
   constructor(private readonly getStatus: GetTaskStatus) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    try {
-      const { taskId } = req.params;
-      const task = await this.getStatus.execute(taskId);
+    const { taskId } = req.params;
+    const task = await this.getStatus.execute(taskId);
 
-      if (!task) {
-        return res.status(404).json({ error: 'Task not found' });
-      }
-
-      return res.json(task);
-    } catch (error) {
-      logger.error({ err: error }, 'Error searching task status');
-      return res.status(500).json({ error: 'Internal server error' });
+    if (!task) {
+      throw new AppError('Task not found', STATUS_CODE.NOT_FOUND);
     }
+
+    return res.status(STATUS_CODE.OK).json(task);
   }
 }

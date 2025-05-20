@@ -3,7 +3,7 @@ import type { IImageTaskRepository } from '@/shared/domain/repositories/IImageTa
 import type { ImageVersion } from '@/shared/domain/entities/ImageTask';
 import { TaskStatus } from '@/shared/domain/entities/ImageTask';
 import sharp from 'sharp';
-import logger from '@/shared/logger';
+import logger from '@/shared/logger/logger';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 

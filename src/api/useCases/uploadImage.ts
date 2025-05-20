@@ -5,6 +5,7 @@ import type { IImageTaskRepository } from '@/shared/domain/repositories/IImageTa
 import type { IMessagingService } from '@/shared/domain/services/IMessagingService';
 import type { ImageTask } from '@/shared/domain/entities/ImageTask';
 import { TaskStatus } from '@/shared/domain/entities/ImageTask';
+import { AppError, STATUS_CODE } from '@/shared/errors/AppError';
 
 export class UploadImage {
   constructor(
@@ -14,15 +15,15 @@ export class UploadImage {
 
   async execute(req: Request): Promise<{ task_id: string; status: string }> {
     if (!req.file) {
-      throw new Error('No file uploaded');
+      throw new AppError('No file uploaded', STATUS_CODE.BAD_REQUEST);
     }
 
     const { filename, path: tempPath, mimetype } = req.file;
     const taskId = uuid();
-
     const metadata = await sharp(tempPath).metadata();
+    
     if (!metadata.width || !metadata.height) {
-      throw new Error('Invalid image file');
+      throw new AppError('Invalid image file', STATUS_CODE.UNPROCESSABLE_ENTITY);
     }
 
     const task: Omit<ImageTask, 'versions'> = {
