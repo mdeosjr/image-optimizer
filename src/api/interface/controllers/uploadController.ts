@@ -7,9 +7,9 @@ export class UploadController {
 
   async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const taskId = await this.uploadImage.execute(req);
+      const taskStatus = await this.uploadImage.execute(req);
       
-      res.status(202).json({ taskId });
+      res.status(STATUS_CODE.ACCEPTED).json(taskStatus);
     } catch (error) {
       next(error)
     }
