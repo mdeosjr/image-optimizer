@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import type { GetTaskStatus } from '@/api/useCases/getTaskStatus';
-import { STATUS_CODE } from '@/shared/errors/AppError';
+import { STATUS_CODE } from '@/utils/errors/AppError';
 
 export class StatusController {
   constructor(private readonly getStatus: GetTaskStatus) {}

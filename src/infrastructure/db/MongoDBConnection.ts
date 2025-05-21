@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import type { Connection } from 'mongoose';
-import type { IDatabaseConnection } from '@/shared/domain/services/IDatabaseConnection';
+import type { IDatabaseConnection } from '@/domain/services/IDatabaseConnection';
 
 export class MongoDBConnection implements IDatabaseConnection {
   private connection!: Connection;

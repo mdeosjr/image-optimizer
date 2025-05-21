@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { StatusController } from '@/api/interface/controllers/statusController';
 import { GetTaskStatus } from '@/api/useCases/getTaskStatus';
-import { ImageTaskRepository } from '@/shared/infrastructure/db/ImageTaskRepository';
+import { ImageTaskRepository } from '@/infrastructure/db/ImageTaskRepository';
 import type { Connection } from 'mongoose';
 
 export function createStatusRouter(db: Connection) {

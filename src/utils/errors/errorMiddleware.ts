@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import { AppError, STATUS_CODE } from '../errors/AppError';
-import logger from '../logger/logger';
+import { AppError, STATUS_CODE } from './AppError';
+import logger from '@/infrastructure/logger/logger';
 
 export function errorMiddleware(err: Error, req: Request, res: Response, next: NextFunction): void {
   if (err instanceof AppError) {

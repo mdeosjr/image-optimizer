@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import type { Router as ExpressRouter } from 'express';
-import type { IMessagingService } from '@/shared/domain/services/IMessagingService';
+import type { IMessagingService } from '@/domain/services/IMessagingService';
 import type { Connection } from 'mongoose';
 import { createStatusRouter } from './status';
 import { createUploadRouter } from './upload';

@@ -1,9 +1,9 @@
-import type { IMessage } from '@/shared/domain/services/IMessagingService';
-import type { IImageTaskRepository } from '@/shared/domain/repositories/IImageTaskRepository';
-import type { ImageVersion } from '@/shared/domain/entities/ImageTask';
-import { TaskStatus } from '@/shared/domain/entities/ImageTask';
+import type { IMessage } from '@/domain/services/IMessagingService';
+import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
+import type { ImageVersion } from '@/domain/entities/ImageTask';
+import { TaskStatus } from '@/domain/entities/ImageTask';
 import sharp from 'sharp';
-import logger from '@/shared/logger/logger';
+import logger from '@/infrastructure/logger/logger';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -13,7 +13,7 @@ export class ProcessImageTask {
   async execute(message: IMessage): Promise<void> {
     const originalName = path.parse(message.originalFilename).name;
     const optimizedDir = path.join('/optimized', `${originalName}_optimized`);
-    
+
     try {
       logger.info({ message }, 'Starting image processing');
       await this.repo.update(message.taskId, { status: TaskStatus.PROCESSING });

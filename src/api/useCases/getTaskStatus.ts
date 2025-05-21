@@ -1,6 +1,6 @@
-import type { IImageTaskRepository } from '@/shared/domain/repositories/IImageTaskRepository';
-import type { ImageTask } from '@/shared/domain/entities/ImageTask';
-import { AppError, STATUS_CODE } from '@/shared/errors/AppError';
+import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
+import type { ImageTask } from '@/domain/entities/ImageTask';
+import { AppError, STATUS_CODE } from '@/utils/errors/AppError';
 
 export class GetTaskStatus {
   constructor(private readonly repo: IImageTaskRepository) {}

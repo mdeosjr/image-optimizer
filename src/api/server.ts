@@ -2,20 +2,16 @@ import express, { json, urlencoded } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { createApiRouter } from './interface/routes';
-import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
-import { MessagingService } from '@/shared/infrastructure/messaging/connection';
-import logger from '../shared/logger/logger';
-import { logMiddleware } from '@/shared/logger/loggerMiddleware';
-import { errorMiddleware } from '@/shared/errors/errorMiddleware';
+import { DatabaseConnection } from '@/infrastructure/db/connection';
+import { MessagingService } from '@/infrastructure/messaging/connection';
+import logger from '@/infrastructure/logger/logger';
+import { logMiddleware } from '@/infrastructure/logger/loggerMiddleware';
+import { errorMiddleware } from '@/utils/errors/errorMiddleware';
 
 dotenv.config();
 
 const app = express();
-const {
-  PORT,
-  MONGODB_URI,
-  RABBITMQ_URI
-} = process.env;
+const { PORT, MONGODB_URI, RABBITMQ_URI } = process.env;
 
 app.use(cors());
 app.use(json());

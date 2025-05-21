@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import logger from '@/shared/logger/logger';
-import { DatabaseConnection } from '@/shared/infrastructure/db/connection';
-import { MessagingService } from '@/shared/infrastructure/messaging/connection';
-import { ImageTaskRepository } from '@/shared/infrastructure/db/ImageTaskRepository';
+import logger from '@/infrastructure/logger/logger';
+import { DatabaseConnection } from '@/infrastructure/db/connection';
+import { MessagingService } from '@/infrastructure/messaging/connection';
+import { ImageTaskRepository } from '@/infrastructure/db/ImageTaskRepository';
 import { ProcessImageTask } from './useCases/processImageTask';
 
 dotenv.config();
