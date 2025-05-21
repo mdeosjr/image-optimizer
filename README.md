@@ -4,7 +4,7 @@
 
 O Image Optimizer é uma solução baseada em microsserviços para upload, processamento e otimização de imagens. Ele permite que usuários façam upload de imagens, que são então processadas de forma assíncrona, gerando versões otimizadas em diferentes qualidades e tamanhos. O sistema utiliza Node.js, Express, MongoDB, RabbitMQ e Sharp, com arquitetura desacoplada entre API e worker.
 
-## Arquitetura
+## Fluxo
 
 - **API**: Recebe uploads, armazena metadados e envia tarefas para a fila RabbitMQ.
 - **Worker**: Consome tarefas da fila, processa as imagens (gera versões low, medium, high) e atualiza o status no MongoDB.
@@ -19,10 +19,12 @@ Usuário → [API] → [RabbitMQ] → [Worker] → [MongoDB/Volumes]
 ## Configuração do Ambiente
 
 ### Pré-requisitos
+
 - Docker e Docker Compose
 - Node.js >= 18 (para desenvolvimento local)
 
 ### Variáveis de Ambiente
+
 Consulte os arquivos `.env.example` em `src/api/` e `src/worker/` para todas as variáveis necessárias. Exemplos principais:
 
 ```
@@ -53,6 +55,7 @@ OPTIMIZE_HIGH_QUALITY=90
    Isso irá iniciar MongoDB, RabbitMQ, API e Worker.
 
 ### Desenvolvimento Local (sem Docker)
+
 1. Instale as dependências:
    ```zsh
    npm install
@@ -76,10 +79,13 @@ npm test
 ## Exemplos de Uso da API
 
 ### Upload de Imagem
+
 ```zsh
 curl -F "image=@/caminho/para/sua-imagem.jpg" http://localhost:3000/api/upload
 ```
+
 **Resposta:**
+
 ```json
 {
   "task_id": "<id-da-tarefa>",
@@ -88,10 +94,13 @@ curl -F "image=@/caminho/para/sua-imagem.jpg" http://localhost:3000/api/upload
 ```
 
 ### Consultar Status da Tarefa
+
 ```zsh
 curl http://localhost:3000/api/status/<id-da-tarefa>
 ```
+
 **Resposta:**
+
 ```json
 {
   "taskId": "...",
@@ -108,15 +117,37 @@ curl http://localhost:3000/api/status/<id-da-tarefa>
 ```
 
 ### Health Check
+
 ```zsh
 curl http://localhost:3000/api/health
 ```
 
 ### Coleção Postman
+
 Importe o arquivo `PostmanCollection.json` para testar todos os endpoints facilmente.
 
-## Decisões de Design e Trade-offs
-- **Processamento Assíncrono**: O uso de RabbitMQ desacopla o upload do processamento, melhorando escalabilidade e resiliência.
-- **Persistência de Arquivos**: Imagens são salvas em volumes compartilhados para facilitar acesso entre API e worker.
-- **Escalabilidade**: API e worker podem ser escalados separadamente.
-- **Tratamento de Erros**: Middleware centralizado para logs e respostas padronizadas.
+## Design e Arquitetura
+
+O projeto segue princípios da Clean Architecture, buscando separar regras de negócio, casos de uso, interfaces e detalhes de infraestrutura. Veja como isso se reflete na estrutura e decisões do projeto:
+
+### Estrutura de Pastas
+
+- `domain/`: Contém entidades, interfaces de repositórios e serviços, totalmente independentes de frameworks e infraestrutura. É o núcleo do negócio.
+- `infrastructure/`: Implementações concretas de repositórios, serviços de mensageria, logger, banco de dados, etc. Depende de frameworks e bibliotecas externas.
+- `api/` e `worker/`: Camadas de interface (controllers, rotas, inicialização), responsáveis por receber requisições, orquestrar casos de uso e injetar dependências.
+- `utils/`: Utilitários e middlewares genéricos.
+
+### Princípios e Padrões Utilizados
+
+- **Inversão de Dependência**: Casos de uso e domínio dependem apenas de interfaces, nunca de implementações concretas.
+- **Repository Pattern**: Abstrai o acesso a dados, facilitando troca de banco e testes.
+- **Singleton**: Serviços de conexão (ex: banco, mensageria) garantem instância única.
+- **Dependency Injection**: Implementações concretas são injetadas na borda do sistema (ex: controllers, server).
+- **Middleware**: Logging e tratamento de erros centralizados.
+
+### Justificativa da Estrutura
+
+- O domínio não depende de nada externo, facilitando testes e manutenção.
+- Infraestrutura fica isolada, podendo ser trocada sem afetar regras de negócio.
+- API e Worker compartilham apenas o que for necessário do domínio e das interfaces, mantendo baixo acoplamento.
+- Utilitários e middlewares ficam fora do domínio, evitando poluição do núcleo do negócio.
