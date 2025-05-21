@@ -11,24 +11,28 @@ import { errorMiddleware } from '@/shared/errors/errorMiddleware';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const {
+  PORT,
+  MONGODB_URI,
+  RABBITMQ_URI
+} = process.env;
 
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 
 async function startServer(): Promise<void> {
-  if (!process.env.MONGODB_URI || !process.env.RABBITMQ_URI) {
+  if (!MONGODB_URI || !RABBITMQ_URI) {
     throw new Error('Connection environment variables are not defined');
   }
 
   try {
     const dbInstance = DatabaseConnection.getInstance();
-    await dbInstance.connect(process.env.MONGODB_URI);
+    await dbInstance.connect(MONGODB_URI);
     const db = dbInstance.getConnection();
 
     const messaging = MessagingService.getInstance();
-    await messaging.initialize(process.env.RABBITMQ_URI);
+    await messaging.initialize(RABBITMQ_URI);
     const messagingService = messaging.getService();
 
     app.use(logMiddleware);
