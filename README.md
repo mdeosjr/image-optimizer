@@ -2,7 +2,7 @@
 
 ## Descrição
 
-O Image Optimizer é uma solução baseada em microsserviços para upload, processamento e otimização de imagens. Ele permite que usuários façam upload de imagens, que são então processadas de forma assíncrona, gerando versões otimizadas em diferentes qualidades e tamanhos. O sistema utiliza Node.js, Express, MongoDB, RabbitMQ e Sharp, com arquitetura desacoplada entre API e worker.
+O Image Optimizer é uma solução baseada em microsserviços para upload, processamento e otimização de imagens. Ele permite que usuários façam upload de imagens, que são então processadas de forma assíncrona, gerando versões otimizadas em diferentes qualidades e tamanhos. O sistema utiliza Node.js, Express, MongoDB, RabbitMQ e Sharp, com arquitetura limpa e desacoplada entre API e worker.
 
 ## Fluxo
 
@@ -138,7 +138,10 @@ O projeto segue princípios da Clean Architecture, buscando separar regras de ne
 - `domain/`: Contém entidades, interfaces de repositórios e serviços, totalmente independentes de frameworks e infraestrutura. É o núcleo do negócio.
 - `infrastructure/`: Implementações concretas de repositórios, serviços de mensageria, logger, banco de dados, etc. Depende de frameworks e bibliotecas externas.
 - `api/` e `worker/`: Camadas de interface (controllers, rotas, inicialização), responsáveis por receber requisições, orquestrar casos de uso e injetar dependências.
-- `utils/`: Utilitários e middlewares genéricos.
+- `utils/`: Utilitários e middlewares genéricos, organizados por funcionalidade:
+  - `errors/`: Tratamento de erros e exceções personalizado
+  - `image/`: Processamento e manipulação de imagens
+  - `retry/`: Mecanismo de retentativas para operações falhas
 
 ### Princípios e Padrões Utilizados
 
@@ -147,7 +150,6 @@ O projeto segue princípios da Clean Architecture, buscando separar regras de ne
 - **Singleton**: Serviços de conexão (ex: banco, mensageria) garantem instância única.
 - **Dependency Injection**: Implementações concretas são injetadas na borda do sistema (ex: controllers, server).
 - **Middleware**: Logging e tratamento de erros centralizados.
-- **Retry Pattern**: Mecanismo de retentativa automática para tarefas que falham durante o processamento.
 
 ### Sistema de Retry
 
@@ -165,3 +167,4 @@ O sistema implementa um mecanismo básico de retry para tarefas que falham:
 - Infraestrutura fica isolada, podendo ser trocada sem afetar regras de negócio.
 - API e Worker compartilham apenas o que for necessário do domínio e das interfaces, mantendo baixo acoplamento.
 - Utilitários e middlewares ficam fora do domínio, evitando poluição do núcleo do negócio.
+- API e Worker foram separados visando escalabilidade separada (diferentes Dockerfiles). Foi mantido no mesmo projeto, sob o mesmo package.json, pois acabam compartilhando muito entre si como o domínio e infraestutura.
