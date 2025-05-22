@@ -73,12 +73,6 @@ OPTIMIZE_HIGH_QUALITY=90
    npm run start:worker
    ```
 
-## Executando os Testes
-
-```zsh
-npm test
-```
-
 ## Exemplos de Uso da API
 
 ### Upload de Imagem
