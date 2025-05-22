@@ -25,6 +25,7 @@ const ImageTaskSchema = new Schema<ImageTask>(
     originalMetadata: { type: ImageMetadataSchema, required: true },
     processedAt: { type: Date },
     errorMessage: { type: String },
+    retryCount: { type: Number, default: 0 },
     versions: {
       low: { type: ImageVersionSchema },
       medium: { type: ImageVersionSchema },

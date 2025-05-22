@@ -11,8 +11,11 @@ O Image Optimizer é uma solução baseada em microsserviços para upload, proce
 - **MongoDB**: Armazena informações das tarefas e metadados das imagens.
 - **RabbitMQ**: Gerencia a fila de processamento assíncrono.
 - **Volumes**: Imagens originais e otimizadas são salvas em volumes compartilhados.
+- **Retry**: Sistema de retentativas automáticas para tarefas que falharem durante o processamento.
 
 ```
+           ┌──── (retry) ────┐
+           │                 ↓
 Usuário → [API] → [RabbitMQ] → [Worker] → [MongoDB/Volumes]
 ```
 
@@ -144,6 +147,17 @@ O projeto segue princípios da Clean Architecture, buscando separar regras de ne
 - **Singleton**: Serviços de conexão (ex: banco, mensageria) garantem instância única.
 - **Dependency Injection**: Implementações concretas são injetadas na borda do sistema (ex: controllers, server).
 - **Middleware**: Logging e tratamento de erros centralizados.
+- **Retry Pattern**: Mecanismo de retentativa automática para tarefas que falham durante o processamento.
+
+### Sistema de Retry
+
+O sistema implementa um mecanismo básico de retry para tarefas que falham:
+
+- Quando uma tarefa falha, é registrado um contador de tentativas (`retryCount`).
+- Se o contador não ultrapassar o máximo (3 tentativas), a tarefa é reenviada para a mesma fila de processamento.
+- Cada retentativa ocorre com um backoff exponencial (1s, 2s, 4s) para evitar sobrecarga.
+- A tarefa mantém o status `FAILED` durante as retentativas, mas com uma mensagem indicando qual tentativa está em andamento.
+- Após exceder o número máximo de tentativas, a tarefa permanece como `FAILED` definitivamente.
 
 ### Justificativa da Estrutura
 

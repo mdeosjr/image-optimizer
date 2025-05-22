@@ -4,6 +4,7 @@ import { DatabaseConnection } from '@/infrastructure/db/connection';
 import { MessagingService } from '@/infrastructure/messaging/connection';
 import { ImageTaskRepository } from '@/infrastructure/db/ImageTaskRepository';
 import { ProcessImageTask } from './useCases/processImageTask';
+import { RetryManager } from '@/utils/retry/RetryManager';
 
 dotenv.config();
 
@@ -22,7 +23,12 @@ async function startWorker() {
     await messaging.initialize(process.env.RABBITMQ_URI);
     const rabbit = messaging.getService();
 
-    const processImageTask = new ProcessImageTask(repo);
+    const retryManager = new RetryManager(repo, rabbit, {
+      maxAttempts: 3,
+      queueName: 'image-processing',
+    });
+
+    const processImageTask = new ProcessImageTask(repo, retryManager);
 
     await rabbit.consumeMessages('image-processing', async (msg) => {
       await processImageTask.execute(msg);

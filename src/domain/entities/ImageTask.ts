@@ -2,7 +2,7 @@ export enum TaskStatus {
   PENDING = 'PENDING',
   PROCESSING = 'PROCESSING',
   COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED'
+  FAILED = 'FAILED',
 }
 
 export interface ImageVersion {
@@ -27,9 +27,10 @@ export interface ImageTask {
   originalMetadata: ImageMetadata;
   processedAt?: Date;
   errorMessage?: string;
+  retryCount?: number;
   versions?: {
     low: ImageVersion;
     medium: ImageVersion;
     high: ImageVersion;
   };
-} 
+}
