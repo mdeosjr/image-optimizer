@@ -1,8 +1,8 @@
-import type { Request, Response, NextFunction } from 'express';
-import { AppError, STATUS_CODE } from './AppError';
 import logger from '@/infrastructure/logger/logger';
+import type { NextFunction, Request, Response } from 'express';
+import { AppError, STATUS_CODE } from './AppError';
 
-export function errorMiddleware(err: Error, req: Request, res: Response, next: NextFunction): void {
+export function errorMiddleware(err: Error, req: Request, res: Response, _next: NextFunction): void {
   if (err instanceof AppError) {
     logger.warn(
       {

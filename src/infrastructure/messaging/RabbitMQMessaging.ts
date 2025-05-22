@@ -1,6 +1,6 @@
+import type { IMessage, IMessagingService } from '@/domain/services/IMessagingService';
 import amqp from 'amqplib';
 import type { Channel, ChannelModel } from 'amqplib';
-import type { IMessagingService, IMessage } from '@/domain/services/IMessagingService';
 
 export class RabbitMQService implements IMessagingService {
   private connection!: ChannelModel;
@@ -40,7 +40,10 @@ export class RabbitMQService implements IMessagingService {
     }
   }
 
-  async consumeMessages(queue: string, callback: (message: IMessage) => Promise<void>): Promise<void> {
+  async consumeMessages(
+    queue: string,
+    callback: (message: IMessage) => Promise<void>
+  ): Promise<void> {
     if (!this.channel) {
       throw new Error('RabbitMQ channel not initialized');
     }

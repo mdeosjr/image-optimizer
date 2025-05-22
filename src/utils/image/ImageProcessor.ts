@@ -1,6 +1,6 @@
-import type { ImageVersion } from '@/domain/entities/ImageTask';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import type { ImageVersion } from '@/domain/entities/ImageTask';
 import logger from '@/infrastructure/logger/logger';
 import * as sharp from 'sharp';
 
@@ -36,7 +36,10 @@ function getDefaultVersions(): ProcessingOptions[] {
   ];
 }
 
-export async function processImage(imagePath: string, originalFilename: string): Promise<ProcessedImage> {
+export async function processImage(
+  imagePath: string,
+  originalFilename: string
+): Promise<ProcessedImage> {
   const originalName = path.parse(originalFilename).name;
   const optimizedDir = path.join('/optimized', `${originalName}_optimized`);
 
@@ -53,7 +56,10 @@ export async function processImage(imagePath: string, originalFilename: string):
     const outFile = `${originalName}_${v.name}.jpg`;
     const outPath = path.join(optimizedDir, outFile);
     const img = sharp.default(imagePath);
-    const { width, height, size } = await img.resize({ width: v.width }).jpeg({ quality: v.quality }).toFile(outPath);
+    const { width, height, size } = await img
+      .resize({ width: v.width })
+      .jpeg({ quality: v.quality })
+      .toFile(outPath);
 
     output[v.name as keyof ProcessedImage] = {
       path: outPath,

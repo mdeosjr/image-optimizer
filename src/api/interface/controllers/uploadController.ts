@@ -1,6 +1,6 @@
-import type { NextFunction, Request, Response } from 'express';
 import type { UploadImage } from '@/api/useCases/uploadImage';
 import { AppError, STATUS_CODE } from '@/utils/errors/AppError';
+import type { NextFunction, Request, Response } from 'express';
 
 export class UploadController {
   constructor(private readonly uploadImage: UploadImage) {}

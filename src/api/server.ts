@@ -1,12 +1,12 @@
-import express, { json, urlencoded } from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { createApiRouter } from './interface/routes';
 import { DatabaseConnection } from '@/infrastructure/db/connection';
-import { MessagingService } from '@/infrastructure/messaging/connection';
 import logger from '@/infrastructure/logger/logger';
 import { logMiddleware } from '@/infrastructure/logger/loggerMiddleware';
+import { MessagingService } from '@/infrastructure/messaging/connection';
 import { errorMiddleware } from '@/utils/errors/errorMiddleware';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express, { json, urlencoded } from 'express';
+import { createApiRouter } from './interface/routes';
 
 dotenv.config();
 

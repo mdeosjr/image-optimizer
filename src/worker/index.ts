@@ -1,10 +1,10 @@
-import dotenv from 'dotenv';
-import logger from '@/infrastructure/logger/logger';
-import { DatabaseConnection } from '@/infrastructure/db/connection';
-import { MessagingService } from '@/infrastructure/messaging/connection';
 import { ImageTaskRepository } from '@/infrastructure/db/ImageTaskRepository';
-import { ProcessImageTask } from './useCases/processImageTask';
+import { DatabaseConnection } from '@/infrastructure/db/connection';
+import logger from '@/infrastructure/logger/logger';
+import { MessagingService } from '@/infrastructure/messaging/connection';
 import { RetryManager } from '@/utils/retry/RetryManager';
+import dotenv from 'dotenv';
+import { ProcessImageTask } from './useCases/processImageTask';
 
 dotenv.config();
 

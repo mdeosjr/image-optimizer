@@ -1,6 +1,6 @@
-import { MongoDBConnection } from './MongoDBConnection';
 import type { IDatabaseConnection } from '@/domain/services/IDatabaseConnection';
 import logger from '@/infrastructure/logger/logger';
+import { MongoDBConnection } from './MongoDBConnection';
 
 export class DatabaseConnection {
   private static instance: DatabaseConnection;

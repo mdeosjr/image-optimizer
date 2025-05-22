@@ -1,6 +1,6 @@
-import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
-import type { IMessagingService, IMessage } from '@/domain/services/IMessagingService';
 import { TaskStatus } from '@/domain/entities/ImageTask';
+import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
+import type { IMessage, IMessagingService } from '@/domain/services/IMessagingService';
 import logger from '@/infrastructure/logger/logger';
 
 export interface RetryOptions {
@@ -37,7 +37,9 @@ export class RetryManager {
 
       await this.repo.update(taskId, {
         status: TaskStatus.FAILED,
-        errorMessage: `Failed after ${retryCount > this.options.maxAttempts ? this.options.maxAttempts : retryCount} attempts. Last error: ${error.message}`,
+        errorMessage: `Failed after ${
+          retryCount > this.options.maxAttempts ? this.options.maxAttempts : retryCount
+        } attempts. Last error: ${error.message}`,
         retryCount,
       });
     }

@@ -1,7 +1,7 @@
-import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
 import type { ImageTask } from '@/domain/entities/ImageTask';
-import type { Model, Connection } from 'mongoose';
+import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
 import { ImageTaskSchema } from '@/infrastructure/db/models/ImageTaskModel';
+import type { Connection, Model } from 'mongoose';
 
 export class ImageTaskRepository implements IImageTaskRepository {
   private model: Model<ImageTask>;

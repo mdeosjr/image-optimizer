@@ -1,8 +1,8 @@
-import type { IMessage } from '@/domain/services/IMessagingService';
-import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
 import { TaskStatus } from '@/domain/entities/ImageTask';
+import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
+import type { IMessage } from '@/domain/services/IMessagingService';
 import logger from '@/infrastructure/logger/logger';
-import { processImage, cleanTemporaryFile } from '@/utils/image/ImageProcessor';
+import { cleanTemporaryFile, processImage } from '@/utils/image/ImageProcessor';
 import { RetryManager } from '@/utils/retry/RetryManager';
 
 const MAX_RETRY_ATTEMPTS = 3;

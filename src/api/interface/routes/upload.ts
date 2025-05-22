@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import multer from 'multer';
 import { UploadController } from '@/api/interface/controllers/uploadController';
 import { UploadImage } from '@/api/useCases/uploadImage';
-import { ImageTaskRepository } from '@/infrastructure/db/ImageTaskRepository';
-import type { Connection } from 'mongoose';
 import type { IMessagingService } from '@/domain/services/IMessagingService';
+import { ImageTaskRepository } from '@/infrastructure/db/ImageTaskRepository';
+import { Router } from 'express';
+import type { Connection } from 'mongoose';
+import multer from 'multer';
 
 export function createUploadRouter(db: Connection, messaging: IMessagingService) {
   const router = Router();
@@ -13,7 +13,9 @@ export function createUploadRouter(db: Connection, messaging: IMessagingService)
   const uploadImage = new UploadImage(repo, messaging);
   const uploadController = new UploadController(uploadImage);
 
-  router.post('/upload', upload.single('image'), (req, res, next) => uploadController.handle(req, res, next));
+  router.post('/upload', upload.single('image'), (req, res, next) =>
+    uploadController.handle(req, res, next)
+  );
 
   return router;
 }

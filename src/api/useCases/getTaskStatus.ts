@@ -1,5 +1,5 @@
-import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
 import type { ImageTask } from '@/domain/entities/ImageTask';
+import type { IImageTaskRepository } from '@/domain/repositories/IImageTaskRepository';
 import { AppError, STATUS_CODE } from '@/utils/errors/AppError';
 
 export class GetTaskStatus {
