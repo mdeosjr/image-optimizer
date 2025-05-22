@@ -5,10 +5,13 @@ WORKDIR /app
 COPY package.json package-lock.json tsconfig.json ./
 RUN npm install
 
-COPY src/shared ./src/shared
+COPY src/domain ./src/domain
+COPY src/infrastructure ./src/infrastructure
+COPY src/utils ./src/utils
 COPY src/api ./src/api
-COPY tmp /tmp
-COPY optimized /optimized
+
+RUN mkdir -p /tmp/uploads
+RUN mkdir -p /optimized
 
 ENV NODE_ENV=development
 EXPOSE 3000
