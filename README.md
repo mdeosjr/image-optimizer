@@ -53,7 +53,7 @@ OPTIMIZE_HIGH_QUALITY=90
    ```
 2. Suba os serviços com Docker Compose:
    ```zsh
-   docker-compose up --build
+   docker compose up --build
    ```
    Isso irá iniciar MongoDB, RabbitMQ, API e Worker.
 
@@ -74,6 +74,12 @@ OPTIMIZE_HIGH_QUALITY=90
    ```
 
 ## Exemplos de Uso da API
+
+### Coleção Postman
+
+Importe o arquivo `PostmanCollection.json` para testar todos os endpoints facilmente.
+
+Ou utilize curl, como nos exemplos abaixo:
 
 ### Upload de Imagem
 
@@ -118,10 +124,6 @@ curl http://localhost:3000/api/status/<id-da-tarefa>
 ```zsh
 curl http://localhost:3000/api/health
 ```
-
-### Coleção Postman
-
-Importe o arquivo `PostmanCollection.json` para testar todos os endpoints facilmente.
 
 ## Design e Arquitetura
 
